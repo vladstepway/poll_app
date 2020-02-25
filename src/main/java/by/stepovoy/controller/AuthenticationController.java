@@ -5,6 +5,7 @@ import by.stepovoy.domain.model.RoleName;
 import by.stepovoy.domain.model.User;
 import by.stepovoy.domain.repository.RoleRepository;
 import by.stepovoy.domain.repository.UserRepository;
+import by.stepovoy.domain.service.UserService;
 import by.stepovoy.exception.CommonAppException;
 import by.stepovoy.payload.ApiResponse;
 import by.stepovoy.payload.LoginRequest;
@@ -36,7 +37,7 @@ public class AuthenticationController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -66,32 +67,13 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
-        }
+        ResponseEntity<User> result = userService.registerUser(signUpRequest);
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ApiResponse(false, "Email is already in use!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword());
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new CommonAppException("User Role not set"));
-
-        user.setRoles(Collections.singleton(userRole));
-
-        User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/users/{username}")
-                .buildAndExpand(result.getUsername()).toUri();
+                .buildAndExpand(result.getBody().getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }

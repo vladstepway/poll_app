@@ -1,20 +1,20 @@
 package by.stepovoy.exception;
 
-public class CommonAppException extends RuntimeException {
+public class DuplicateEmailException extends RuntimeException {
     private String message;
 
-    public CommonAppException(String message) {
+    public DuplicateEmailException(String message) {
         super(message);
         this.message = message;
     }
 
     @Override
-    public String getLocalizedMessage() {
+    public String getMessage() {
         return message;
     }
 
     @Override
-    public String getMessage() {
+    public String getLocalizedMessage() {
         return message;
     }
 

@@ -1,7 +1,7 @@
 package by.stepovoy.security;
 
 import by.stepovoy.domain.model.User;
-import by.stepovoy.domain.repository.UserRepository;
+import by.stepovoy.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userNameOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByUsernameOrEmail(userNameOrEmail, userNameOrEmail)
+        User user = userService.findByUsernameOrEmail(userNameOrEmail)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username or email : " + userNameOrEmail));
         return UserPrincipal.create(user);
@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
+        User user = userService.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User not found with id : " + id)
         );
 
