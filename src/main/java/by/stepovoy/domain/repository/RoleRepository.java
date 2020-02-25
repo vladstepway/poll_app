@@ -1,7 +1,7 @@
 package by.stepovoy.domain.repository;
 
-import by.stepovoy.domain.model.Role;
-import by.stepovoy.domain.model.RoleName;
+import by.stepovoy.domain.model.user.Role;
+import by.stepovoy.domain.model.user.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

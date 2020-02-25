@@ -1,19 +1,14 @@
 package by.stepovoy.controller;
 
-import by.stepovoy.domain.model.Role;
-import by.stepovoy.domain.model.RoleName;
-import by.stepovoy.domain.model.User;
+import by.stepovoy.domain.model.user.User;
 import by.stepovoy.domain.repository.RoleRepository;
-import by.stepovoy.domain.repository.UserRepository;
 import by.stepovoy.domain.service.UserService;
-import by.stepovoy.exception.CommonAppException;
 import by.stepovoy.payload.ApiResponse;
 import by.stepovoy.payload.LoginRequest;
 import by.stepovoy.payload.SignUpRequest;
 import by.stepovoy.payload.jwt.JwtAuthenticationResponse;
 import by.stepovoy.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/auth")

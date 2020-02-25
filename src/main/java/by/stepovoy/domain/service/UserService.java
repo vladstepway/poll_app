@@ -1,14 +1,13 @@
 package by.stepovoy.domain.service;
 
-import by.stepovoy.domain.model.Role;
-import by.stepovoy.domain.model.RoleName;
-import by.stepovoy.domain.model.User;
+import by.stepovoy.domain.model.user.Role;
+import by.stepovoy.domain.model.user.RoleName;
+import by.stepovoy.domain.model.user.User;
 import by.stepovoy.domain.repository.RoleRepository;
 import by.stepovoy.domain.repository.UserRepository;
 import by.stepovoy.exception.CommonAppException;
 import by.stepovoy.exception.DuplicateEmailException;
 import by.stepovoy.exception.DuplicateUserNameException;
-import by.stepovoy.payload.ApiResponse;
 import by.stepovoy.payload.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -69,7 +68,7 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+        Role userRole = roleService.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new CommonAppException("User Role not set"));
 
         user.setRoles(Collections.singleton(userRole));

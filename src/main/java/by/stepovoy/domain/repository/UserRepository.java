@@ -1,6 +1,6 @@
 package by.stepovoy.domain.repository;
 
-import by.stepovoy.domain.model.User;
+import by.stepovoy.domain.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

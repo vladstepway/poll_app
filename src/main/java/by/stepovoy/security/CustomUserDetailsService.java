@@ -1,6 +1,6 @@
 package by.stepovoy.security;
 
-import by.stepovoy.domain.model.User;
+import by.stepovoy.domain.model.user.User;
 import by.stepovoy.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

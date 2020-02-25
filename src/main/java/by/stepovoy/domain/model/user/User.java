@@ -1,4 +1,4 @@
-package by.stepovoy.domain.model;
+package by.stepovoy.domain.model.user;
 
 import by.stepovoy.domain.audit.DateAudit;
 import org.hibernate.annotations.NaturalId;

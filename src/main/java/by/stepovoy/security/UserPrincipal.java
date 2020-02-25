@@ -1,6 +1,6 @@
 package by.stepovoy.security;
 
-import by.stepovoy.domain.model.User;
+import by.stepovoy.domain.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
