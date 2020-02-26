@@ -28,7 +28,7 @@ class App extends React.Component {
 
         this.handleLogout = this.handleLogout.bind(this);
         this.loadCurrentUser = this.loadCurrentUser.bind(this);
-        // this.handleLogin = this.handleLogin.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
 
         notification.config({
             placement: 'topRight',
@@ -78,8 +78,16 @@ class App extends React.Component {
         this.props.history.push("/");
     }
 
+    handleLogin() {
+        notification.success({
+            message: 'Polling App',
+            description: "You're successfully logged in.",
+        });
+        this.loadCurrentUser();
+        this.props.history.push("/");
+    }
+
     render() {
-        // debugger
         if (this.state.isLoading) {
             return <LoadingIndicator/>
         }
@@ -102,18 +110,17 @@ class App extends React.Component {
                                    }/>
                             <Route path="/login"
                                    render={(props) =>
-                                       <Login /*onLogin={this.handleLogin}*/ {...props}/>
+                                       <Login onLogin={this.handleLogin} {...props}/>
                                    }/>
                             <Route path="/signup" component={Signup}/>
                             <Route path="/users/:username"
                                    render={(props =>
-                                       <Profile /*isAuthenticated={this.state.isAuthenticated}
-                                                currentUser={this.state.currentUser}*/ {...props}
+                                       <Profile isAuthenticated={this.state.isAuthenticated}
+                                                currentUser={this.state.currentUser} {...props}
                                        />)}/>
                             <PrivateRoute authenticated={this.state.isAuthenticated}
-                                          path="/poll/new"
-                                          component={NewPoll}
-                                // handleLogout={this.handleLogout}
+                                          path="/poll/new" component={NewPoll}
+                                handleLogout={this.handleLogout}
                             />
                             <Route component={NotFound}/>
                         </Switch>

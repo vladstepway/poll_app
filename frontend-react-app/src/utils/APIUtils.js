@@ -61,12 +61,49 @@ export function getAllPolls(page, size) {
 }
 
 export function getCurrentUser() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
     return request({
         url: API_BASE_URL + "/user/me",
+        method: 'GET'
+    });
+}
+
+export function login(loginRequest) {
+    return request({
+        url: API_BASE_URL + "/auth/signin",
+        method: 'POST',
+        body: JSON.stringify(loginRequest)
+    });
+}
+
+export function signup(signupRequest) {
+    return request({
+        url: API_BASE_URL + "/auth/signup",
+        method: 'POST',
+        body: JSON.stringify(signupRequest)
+    });
+}
+
+export function isUsernameAvailable(username) {
+    return request({
+        url: API_BASE_URL + "/user/isUsernameAvailable?username=" + username,
+        method: 'GET'
+    });
+}
+
+export function isEmailAvailable(email) {
+    return request({
+        url: API_BASE_URL + "/user/isEmailAvailable?email=" + email,
+        method: 'GET'
+    });
+}
+
+export function getUserProfile(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username,
         method: 'GET'
     });
 }
