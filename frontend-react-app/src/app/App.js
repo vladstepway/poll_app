@@ -3,17 +3,16 @@ import './App.css';
 import {Layout, notification} from "antd";
 import {Route, Switch, withRouter} from "react-router-dom";
 import {ACCESS_TOKEN} from "../constants";
-import {getCurrentUser} from '../utils/APIUtils';
-
-import PollList from '../poll/PollList';
-import NewPoll from '../poll/NewPoll';
-import Login from '../user/login/Login';
-import Signup from '../user/signup/Signup';
-import Profile from '../user/profile/Profile';
-import Header from '../common/Header';
-import NotFound from '../common/NotFound';
+import AppHeader from '../common/AppHeader';
 import LoadingIndicator from '../common/LoadingIndicator';
-import PrivateRoute from '../common/PrivateRoute';
+import PollList from "../poll/PollList";
+import Login from "../user/login/Login";
+import Signup from "../user/signup/Signup";
+import Profile from "../user/profile/Profile";
+import PrivateRoute from "../common/PrivateRoute";
+import NotFound from "../common/NotFound";
+import NewPoll from "../poll/NewPoll";
+import {getCurrentUser} from "../utils/APIUtils";
 
 const {Content} = Layout;
 
@@ -29,7 +28,7 @@ class App extends React.Component {
 
         this.handleLogout = this.handleLogout.bind(this);
         this.loadCurrentUser = this.loadCurrentUser.bind(this);
-        this.handleLogin = this.handleLogin.bind(this);
+        // this.handleLogin = this.handleLogin.bind(this);
 
         notification.config({
             placement: 'topRight',
@@ -43,7 +42,7 @@ class App extends React.Component {
             isLoading: true
         });
         getCurrentUser()
-            .them(response => {
+            .then(response => {
                 this.setState({
                     currentUser: response,
                     isAuthenticated: true,
@@ -80,15 +79,16 @@ class App extends React.Component {
     }
 
     render() {
+        // debugger
         if (this.state.isLoading) {
             return <LoadingIndicator/>
         }
 
         return (
             <Layout className="app-container">
-                <Header isAuthenticated={this.state.isAuthenticated}
-                        currentUser={this.state.currentUser}
-                        onLogout={this.handleLogout}/>
+                <AppHeader isAuthenticated={this.state.isAuthenticated}
+                           currentUser={this.state.currentUser}
+                           onLogout={this.handleLogout}/>
                 <Content className="app-content">
                     <div className="container">
                         <Switch>
@@ -98,21 +98,22 @@ class App extends React.Component {
                                                  currentUser={this.state.currentUser}
                                                  handleLogout={this.handleLogout}
                                                  {...props}
-                                       />}/>
+                                       />
+                                   }/>
                             <Route path="/login"
                                    render={(props) =>
-                                       <Login onLogin={this.handleLogin} {...props}/>
+                                       <Login /*onLogin={this.handleLogin}*/ {...props}/>
                                    }/>
                             <Route path="/signup" component={Signup}/>
                             <Route path="/users/:username"
                                    render={(props =>
-                                       <Profile isAuthenticated={this.state.isAuthenticated}
-                                                currentUser={this.state.currentUser} {...props}
+                                       <Profile /*isAuthenticated={this.state.isAuthenticated}
+                                                currentUser={this.state.currentUser}*/ {...props}
                                        />)}/>
                             <PrivateRoute authenticated={this.state.isAuthenticated}
                                           path="/poll/new"
                                           component={NewPoll}
-                                          handleLogout={this.handleLogout}
+                                // handleLogout={this.handleLogout}
                             />
                             <Route component={NotFound}/>
                         </Switch>
